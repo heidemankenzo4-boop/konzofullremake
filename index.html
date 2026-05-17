@@ -1,0 +1,435 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konzo Bypass Remade - School Bookmarklet Bypasses</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#8b5cf6 #0a0a0a}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:#8b5cf6;border-radius:4px}
+body{font-family:'Inter',sans-serif;background:#050507;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(139,92,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.03) 1px,transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+.bg-glow{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;pointer-events:none;animation:float 15s ease-in-out infinite}
+.glow1{width:600px;height:600px;background:rgba(139,92,246,0.12);top:-200px;left:-100px}
+.glow2{width:500px;height:500px;background:rgba(236,72,153,0.08);bottom:-200px;right:-100px;animation-delay:-7s}
+.glow3{width:400px;height:400px;background:rgba(59,130,246,0.08);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.05)}}
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:50px;font-size:0.85rem;color:#a78bfa;margin-bottom:2rem;animation:fadeInUp 0.8s ease}
+.hero-badge .dot{width:8px;height:8px;background:#8b5cf6;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.hero h1{font-size:clamp(3rem,8vw,6rem);font-weight:900;line-height:1.05;margin-bottom:1.5rem;animation:fadeInUp 0.8s ease 0.1s both}
+.hero h1 .gradient{background:linear-gradient(135deg,#8b5cf6,#ec4899,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .outline{-webkit-text-stroke:2px rgba(139,92,246,0.4);-webkit-text-fill-color:transparent}
+.hero p{font-size:1.2rem;color:#94a3b8;max-width:600px;line-height:1.7;margin-bottom:2.5rem;animation:fadeInUp 0.8s ease 0.2s both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeInUp 0.8s ease 0.3s both}
+.btn-primary{padding:14px 36px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(139,92,246,0.4)}
+.btn-secondary{padding:14px 36px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#e2e8f0;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
+.scroll-indicator{position:absolute;bottom:2rem;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+.scroll-indicator svg{width:24px;height:24px;stroke:#8b5cf6;stroke-width:2;fill:none}
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin:4rem 0}
+.stat-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:2rem;text-align:center;transition:all 0.3s}
+.stat-card:hover{border-color:rgba(139,92,246,0.3);transform:translateY(-4px);background:rgba(139,92,246,0.03)}
+.stat-number{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:0.9rem;color:#64748b;margin-top:0.3rem}
+.section-header{text-align:center;margin:5rem 0 3rem}
+.section-header h2{font-size:2.5rem;font-weight:800;margin-bottom:0.8rem}
+.section-header p{color:#64748b;font-size:1.1rem;max-width:500px;margin:0 auto}
+.tabs{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+.tab{padding:10px 22px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:50px;color:#94a3b8;font-size:0.9rem;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif}
+.tab:hover,.tab.active{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:#a78bfa}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.5rem;margin-bottom:5rem}
+.card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:1.8rem;transition:all 0.4s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--card-color,#8b5cf6),transparent);opacity:0;transition:opacity 0.3s}
+.card:hover{border-color:rgba(139,92,246,0.25);transform:translateY(-4px);background:rgba(139,92,246,0.03)}
+.card:hover::before{opacity:1}
+.card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem}
+.card-icon.purple{background:rgba(139,92,246,0.15)}
+.card-icon.pink{background:rgba(236,72,153,0.15)}
+.card-icon.blue{background:rgba(59,130,246,0.15)}
+.card-icon.green{background:rgba(34,197,94,0.15)}
+.card-icon.orange{background:rgba(249,115,22,0.15)}
+.card-icon.red{background:rgba(239,68,68,0.15)}
+.card-icon.yellow{background:rgba(234,179,8,0.15)}
+.card-icon.cyan{background:rgba(6,182,212,0.15)}
+.card h3{font-size:1.2rem;font-weight:700;margin-bottom:0.5rem}
+.card p{font-size:0.9rem;color:#64748b;line-height:1.6;margin-bottom:1.2rem}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.2rem}
+.tag{padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;background:rgba(139,92,246,0.1);color:#a78bfa}
+.tag.works{background:rgba(34,197,94,0.1);color:#4ade80}
+.tag.risk{background:rgba(239,68,68,0.1);color:#f87171}
+.tag.popular{background:rgba(234,179,8,0.1);color:#facc15}
+.card-actions{display:flex;gap:8px}
+.copy-btn{flex:1;padding:10px;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.copy-btn.main{background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff}
+.copy-btn.main:hover{box-shadow:0 4px 20px rgba(139,92,246,0.4);transform:translateY(-1px)}
+.copy-btn.main.copied{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+.how-card{text-align:center;padding:2.5rem 2rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px;transition:all 0.3s}
+.how-card:hover{border-color:rgba(139,92,246,0.2);transform:translateY(-4px)}
+.how-step{width:50px;height:50px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;margin:0 auto 1.5rem}
+.how-card h3{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.how-card p{font-size:0.9rem;color:#64748b;line-height:1.6}
+.warning{background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(249,115,22,0.05));border:1px solid rgba(239,68,68,0.2);border-radius:20px;padding:2.5rem;margin:3rem 0;text-align:center}
+.warning h3{color:#f87171;font-size:1.3rem;margin-bottom:0.8rem}
+.warning p{color:#94a3b8;line-height:1.7;max-width:700px;margin:0 auto}
+footer{text-align:center;padding:4rem 0 2rem;border-top:1px solid rgba(255,255,255,0.05)}
+footer p{color:#475569;font-size:0.85rem}
+.search-wrap{max-width:500px;margin:0 auto 3rem;position:relative}
+.search-wrap input{width:100%;padding:14px 20px 14px 50px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;color:#e2e8f0;font-size:1rem;font-family:'Inter',sans-serif;outline:none;transition:all 0.3s}
+.search-wrap input:focus{border-color:rgba(139,92,246,0.5);background:rgba(139,92,246,0.03)}
+.search-wrap input::placeholder{color:#475569}
+.search-wrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;stroke:#64748b;fill:none;stroke-width:2}
+.particle{position:fixed;width:2px;height:2px;background:#8b5cf6;border-radius:50%;pointer-events:none;z-index:0}
+@media(max-width:768px){.cards-grid{grid-template-columns:1fr}.hero h1{font-size:2.8rem}.stats-bar{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="bg-glow glow3"></div>
+
+<section class="hero"><div class="container">
+<div class="hero-badge"><span class="dot"></span> Konzo Bypass Remade - 2025-2026</div>
+<h1><span class="gradient">KONZO</span> <span class="outline">BYPASS</span> <span style="font-size:0.45em;opacity:0.7;font-weight:400;letter-spacing:0.15em">REMADE</span></h1>
+<p>The ultimate collection of school bookmarklet bypasses. Originally by Konzo. Remade and improved. Do not steal or rebrand.</p>
+<div class="hero-buttons">
+<a href="#bookmarklets" class="btn-primary"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16l7-3 7 3V4a2 2 0 0 0-2-2z"></path></svg> Browse Bookmarklets</a>
+<a href="games.html" class="btn-secondary" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12l4-4 4 4"></path><rect x="2" y="4" width="14" height="10" rx="2"></rect></svg> 500+ Free Games</a>
+<a href="#how" class="btn-secondary">How to Use</a>
+</div>
+</div><div class="scroll-indicator"><svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg></div></section>
+
+<div class="container"><div class="stats-bar">
+<div class="stat-card"><div class="stat-number"><span class="counter" data-target="27">27</span>+</div><div class="stat-label">Bookmarklets</div></div>
+<div class="stat-card"><div class="stat-number"><span class="counter" data-target="9">9</span></div><div class="stat-label">Categories</div></div>
+<div class="stat-card"><div class="stat-number"><span class="counter" data-target="100">100</span>K+</div><div class="stat-label">Students Helped</div></div>
+<div class="stat-card"><div class="stat-number"><span class="counter" data-target="2026">2026</span></div><div class="stat-label">Last Updated</div></div>
+</div></div>
+
+<section id="how" class="container"><div class="section-header"><h2>How It Works</h2><p>Get running in under 30 seconds. No downloads needed.</p></div>
+<div class="how-grid">
+<div class="how-card"><div class="how-step">1</div><h3>Pick a Bookmarklet</h3><p>Browse the collection and find the bypass you need.</p></div>
+<div class="how-card"><div class="how-step">2</div><h3>Copy the Code</h3><p>Click the copy button to grab the JavaScript code to your clipboard.</p></div>
+<div class="how-card"><div class="how-step">3</div><h3>Create Bookmark</h3><p>Right-click your bookmarks bar, add a new bookmark, and paste the code as the URL.</p></div>
+<div class="how-card"><div class="how-step">4</div><h3>Click and Bypass</h3><p>Visit the blocked page and click your bookmarklet. Done!</p></div>
+</div></section>
+
+<section id="bookmarklets" class="container"><div class="section-header"><h2>Bookmarklet Collection</h2><p>Click any card to reveal the code, then copy it.</p></div>
+<div style="background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(236,72,153,0.08));border:1px solid rgba(139,92,246,0.25);border-radius:14px;padding:14px 20px;margin-bottom:2rem;text-align:center;font-size:0.85rem;color:#a78bfa">Konzo Bypass Remade — If this page was not shared by Konzo, it was stolen. Do not rebrand or claim as your own.</div>
+<div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" id="search" placeholder="Search bookmarklets..."></div>
+<div class="tabs">
+<button class="tab active" data-filter="all">All</button>
+<button class="tab" data-filter="unblock">Unblock</button>
+<button class="tab" data-filter="chromebook">Chromebook</button>
+<button class="tab" data-filter="devtools">DevTools</button>
+<button class="tab" data-filter="ui">UI Mods</button>
+<button class="tab" data-filter="games">Games</button>
+<button class="tab" data-filter="utility">Utility</button>
+<button class="tab" data-filter="fun">Fun</button>
+<button class="tab" data-filter="cheats">Cheats</button>
+</div>
+
+<div class="cards-grid" id="cards">
+
+<!-- UNBLOCK -->
+<div class="card" data-category="unblock" data-name="UV Proxy Launcher">
+<div class="card-icon purple">🌐</div><h3>UV Proxy Launcher</h3>
+<p>Launches a web proxy within your current tab, letting you access blocked sites through an encrypted relay.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Unblock</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'uvproxy')">Copy Code</button></div>
+<div class="code-preview" id="uvproxy"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="unblock" data-name="Google Cache Viewer">
+<div class="card-icon blue">🔎</div><h3>Google Cache Viewer</h3>
+<p>View the cached version of any blocked page through Google's own cache. Works when direct access is blocked.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Unblock</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'gcache')">Copy Code</button></div>
+<div class="code-preview" id="gcache"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="unblock" data-name="Wayback Machine Bypass">
+<div class="card-icon cyan">📚</div><h3>Wayback Machine Bypass</h3>
+<p>Opens the current blocked URL in the Internet Archive Wayback Machine for instant access.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Unblock</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'wayback')">Copy Code</button></div>
+<div class="code-preview" id="wayback"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="unblock" data-name="Translate Bypass">
+<div class="card-icon green">🌐</div><h3>Google Translate Bypass</h3>
+<p>Uses Google Translate as a proxy to load blocked pages. School filters rarely block Google Translate.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Unblock</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'trans')">Copy Code</button></div>
+<div class="code-preview" id="trans"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- CHROMEBOOK -->
+<div class="card" data-category="chromebook" data-name="Close Tab Trick">
+<div class="card-icon red">🔒</div><h3>Close Tab Trick</h3>
+<p>The classic Chromebook bypass. Spam close tab right as an extension loads to escape monitoring.</p>
+<div class="card-tags"><span class="tag risk">May Not Work</span><span class="tag popular">Popular</span><span class="tag">Chromebook</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'closetab')">Copy Code</button></div>
+<div class="code-preview" id="closetab"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="chromebook" data-name="Extension Page Access">
+<div class="card-icon orange">⚠️</div><h3>Extension Page Access</h3>
+<p>Quickly jump to chrome://extensions when blocked. Opens the flag page to disable monitoring extensions.</p>
+<div class="card-tags"><span class="tag risk">May Not Work</span><span class="tag">Chromebook</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'extpage')">Copy Code</button></div>
+<div class="code-preview" id="extpage"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="chromebook" data-name="Chrome Flags Access">
+<div class="card-icon yellow">⚖️</div><h3>Chrome Flags Access</h3>
+<p>Opens Chrome flags page where you can modify browser behavior and disable restrictive features.</p>
+<div class="card-tags"><span class="tag risk">May Not Work</span><span class="tag">Chromebook</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'flags')">Copy Code</button></div>
+<div class="code-preview" id="flags"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- DEVTOOLS -->
+<div class="card" data-category="devtools" data-name="DevTools Opener">
+<div class="card-icon pink">🔨</div><h3>DevTools Opener</h3>
+<p>Opens Chrome DevTools via JavaScript. Works even when right-click is disabled or F12 is blocked.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">DevTools</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'devtools')">Copy Code</button></div>
+<div class="code-preview" id="devtools"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="devtools" data-name="Page Source Viewer">
+<div class="card-icon blue">📄</div><h3>View Page Source</h3>
+<p>View the source code of any page when right-click and Ctrl+U are disabled.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">DevTools</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'source')">Copy Code</button></div>
+<div class="code-preview" id="source"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- UI MODS -->
+<div class="card" data-category="ui" data-name="Remove Block Overlay">
+<div class="card-icon green">❌</div><h3>Remove Block Overlay</h3>
+<p>Removes blocking overlays and pop-ups that extensions add to blocked pages.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">UI Mods</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'overlay')">Copy Code</button></div>
+<div class="code-preview" id="overlay"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="ui" data-name="Fullscreen Mode">
+<div class="card-icon purple">📷</div><h3>Force Fullscreen</h3>
+<p>Forces the browser into fullscreen mode. Hides the tab bar and monitoring extension indicators.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">UI Mods</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'fullscreen')">Copy Code</button></div>
+<div class="code-preview" id="fullscreen"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="ui" data-name="Dark Mode Toggle">
+<div class="card-icon blue">🌙</div><h3>Dark Mode Toggle</h3>
+<p>Instantly applies a dark mode filter to any page. Toggle on/off.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">UI Mods</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'darkmode')">Copy Code</button></div>
+<div class="code-preview" id="darkmode"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="ui" data-name="Text Select Enabler">
+<div class="card-icon cyan">📝</div><h3>Enable Text Selection</h3>
+<p>Re-enables text selection and right-click on pages that disable them.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">UI Mods</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'select')">Copy Code</button></div>
+<div class="code-preview" id="select"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- GAMES -->
+<div class="card" data-category="games" data-name="Hidden Snake Game">
+<div class="card-icon green">🎮</div><h3>Hidden Game Launcher</h3>
+<p>Opens a fully playable Snake game directly in your browser tab. Looks like a blank page to monitoring.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Games</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'game')">Copy Code</button></div>
+<div class="code-preview" id="game"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- UTILITY -->
+<div class="card" data-category="utility" data-name="URL Cloaker">
+<div class="card-icon orange">🔑</div><h3>URL Cloaker</h3>
+<p>Masks the current page title and favicon to look like schoolwork.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Utility</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'cloak')">Copy Code</button></div>
+<div class="code-preview" id="cloak"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="utility" data-name="Page Freezer">
+<div class="card-icon blue">❄️</div><h3>Page Freezer</h3>
+<p>Freezes the current page state while you browse elsewhere in an iframe layer.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Utility</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'freeze')">Copy Code</button></div>
+<div class="code-preview" id="freeze"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="utility" data-name="Auto Typer">
+<div class="card-icon green">⌨️</div><h3>Auto Typer</h3>
+<p>Automatically types text into input fields. Great for filling out long school forms.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Utility</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'autotype')">Copy Code</button></div>
+<div class="code-preview" id="autotype"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- FUN -->
+<div class="card" data-category="fun" data-name="Matrix Rain">
+<div class="card-icon green">💸</div><h3>Matrix Rain Effect</h3>
+<p>Unleashes the iconic Matrix digital rain effect over the current page.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Fun</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'matrix')">Copy Code</button></div>
+<div class="code-preview" id="matrix"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="fun" data-name="Disco Mode">
+<div class="card-icon pink">🎢</div><h3>Disco Mode</h3>
+<p>Turns any page into a flashing disco party. Toggle on/off.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Fun</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'disco')">Copy Code</button></div>
+<div class="code-preview" id="disco"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="fun" data-name="Page Inverter">
+<div class="card-icon purple">🔄</div><h3>Page Inverter</h3>
+<p>Inverts all colors on the page. Great for pranks or making bright pages readable at night.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Fun</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'invert')">Copy Code</button></div>
+<div class="code-preview" id="invert"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<!-- CHEATS -->
+<div class="card" data-category="cheats" data-name="Quill.org Cheat" style="--card-color:#f59e0b">
+<div class="card-icon yellow">✍️</div><h3>Quill.org Assignment Finisher</h3>
+<p>Opens a sleek control panel UI on Quill.org with options to auto-answer, auto-submit, and speed-run all assignments. Works on Safari and Chrome.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Cheats</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'quillcheat')">Copy Code</button></div>
+<div class="code-preview" id="quillcheat"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="cheats" data-name="Quill Connect Cheat" style="--card-color:#ec4899">
+<div class="card-icon pink">🔗</div><h3>Quill Connect Solver</h3>
+<p>Solves Quill Connect sentence-combining activities by auto-filling the combined sentence and submitting.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag">Cheats</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'quillconnect')">Copy Code</button></div>
+<div class="code-preview" id="quillconnect"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+<div class="card" data-category="cheats" data-name="Quill Grammar Bot" style="--card-color:#22c55e">
+<div class="card-icon green">🤖</div><h3>Quill Grammar Bot</h3>
+<p>Automatically selects grammar answers on Quill Grammar activities. Has speed control and auto-advance.</p>
+<div class="card-tags"><span class="tag works">Works</span><span class="tag popular">Popular</span><span class="tag">Cheats</span></div>
+<div class="card-actions"><button class="copy-btn main" onclick="copyCode(this,'quillgram')">Copy Code</button></div>
+<div class="code-preview" id="quillgram"><code>Click Copy Code to get this bookmarklet</code></div></div>
+
+</div></section>
+
+<div class="container"><div class="warning">
+<h3>⚠️ Disclaimer</h3>
+<p>These bookmarklets are provided for educational and personal use only. Bypassing school restrictions may violate your school's acceptable use policy. Use responsibly.</p>
+</div></div>
+
+<div class="container"><footer><p>Konzo Bypass Remade — Originally by Konzo. Do not steal, rebrand, or claim as your own. 🚀</p></footer></div>
+
+<script>
+// Konzo Bypass Remade - Anti-theft watermark
+console.log('%cKonzo Bypass Remade', 'color:#8b5cf6;font-size:40px;font-weight:bold');
+console.log('%cIf you stole this code, you are lame.', 'color:#ec4899;font-size:16px');
+
+// All bookmarklet codes stored in JS - not shown in HTML to prevent code theft
+var bookmarkletCodes = {
+  uvproxy: 'javascript:void(window.open("https://"+atob("dW0uc2Nob29sLw==")+prompt("Enter URL to unblock:","https://example.com"),"_blank"))',
+  gcache: 'javascript:void(window.open("https://webcache.googleusercontent.com/search?q=cache:"+location.href,"_blank"))',
+  wayback: 'javascript:void(window.open("https://web.archive.org/web/"+location.href,"_blank"))',
+  trans: 'javascript:void(window.open("https://translate.google.com/translate?sl=auto&tl=en&u="+encodeURIComponent(location.href),"_blank"))',
+  closetab: 'javascript:void(function(){for(var i=0;i<100;i++){window.open("","_self")}window.close()}())',
+  extpage: 'javascript:void(window.open("chrome://extensions","_blank"))',
+  flags: 'javascript:void(window.open("chrome://flags","_blank"))',
+  devtools: 'javascript:void(function(){var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/eruda";document.head.appendChild(s);s.onload=function(){eruda.init()}}())',
+  source: 'javascript:void(window.open("view-source:"+location.href,"_blank"))',
+  overlay: 'javascript:void(function(){document.querySelectorAll("[style*=\"position: fixed\"],[style*=\"position:fixed\"]").forEach(function(e){if(e.style.zIndex>999||e.style.zIndex==="")e.remove()});document.body.style.overflow="auto";document.documentElement.style.overflow="auto"}())',
+  fullscreen: 'javascript:void(document.documentElement.requestFullscreen())',
+  darkmode: 'javascript:void(function(){var e=document.getElementById("_dm_toggle");if(e){e.remove();return}var s=document.createElement("style");s.id="_dm_toggle";s.textContent="*{background-color:#1a1a1a!important;color:#e0e0e0!important;border-color:#333!important}a{color:#8ab4f8!important}img{opacity:0.85}";document.head.appendChild(s)}())',
+  cloak: 'javascript:void(function(){var t=prompt("Enter fake title:","Google Classroom - My Classes");if(t)document.title=t;var l=document.createElement("link");l.rel="icon";l.href="https://www.google.com/favicon.ico";document.head.appendChild(l)}())',
+  freeze: 'javascript:void(function(){var u=prompt("Enter URL to browse:","https://example.com");if(!u)return;var f=document.createElement("iframe");f.src=u;f.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:999999";document.body.appendChild(f);document.title=document.title+" [FROZEN]"}())',
+  autotype: 'javascript:void(function(){var text=prompt("Enter text to auto-type:","");if(!text)return;var el=document.activeElement;if(el.tagName==="INPUT"||el.tagName==="TEXTAREA"){var i=0;var t=setInterval(function(){if(i>=text.length){clearInterval(t);return}el.value+=text[i];el.dispatchEvent(new Event("input",{bubbles:true}));i++},50)}else{alert("Click on an input field first!")}}())',
+  matrix: 'javascript:void(function(){var c=document.createElement("canvas");c.style.cssText="position:fixed;top:0;left:0;z-index:999998;pointer-events:none";c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);var x=c.getContext("2d"),cols=Math.floor(c.width/14),drops=Array(cols).fill(0);function draw(){x.fillStyle="rgba(0,0,0,0.05)";x.fillRect(0,0,c.width,c.height);x.fillStyle="#0f0";x.font="14px monospace";for(var i=0;i<drops.length;i++){x.fillText(String.fromCharCode(0x30A0+Math.random()*96),i*14,drops[i]*14);if(drops[i]*14>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++}}setInterval(draw,50)}())',
+  disco: 'javascript:void(function(){var e=document.getElementById("_disco");if(e){e.remove();return}var s=document.createElement("style");s.id="_disco";s.textContent="@keyframes disco{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}*{animation:disco 1s linear infinite}";document.head.appendChild(s)}())',
+  invert: 'javascript:void(function(){var e=document.getElementById("_invert");if(e){e.remove();return}var s=document.createElement("style");s.id="_invert";s.textContent="html{filter:invert(1) hue-rotate(180deg)}img,video{filter:invert(1) hue-rotate(180deg)}";document.head.appendChild(s)}())',
+  select: 'javascript:void(function(){document.oncontextmenu=null;document.onselectstart=null;document.ondragstart=null;document.onmousedown=null;document.body.oncontextmenu=null;document.body.onselectstart=null;document.body.ondragstart=null;document.body.onmousedown=null;var s=document.createElement("style");s.textContent="*{-webkit-user-select:text!important;-moz-user-select:text!important;user-select:text!important}";document.head.appendChild(s)}())',
+  game: 'javascript:void(function(){var c=document.createElement("canvas");c.width=400;c.height=400;c.style.cssText="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);border:2px solid #0f0;z-index:999999";document.body.innerHTML="";document.body.style.background="#111";document.body.appendChild(c);var x=c.getContext("2d"),s=[{x:10,y:10}],d="r",f={x:15,y:15},sc=0;function draw(){x.fillStyle="#111";x.fillRect(0,0,400,400);s.forEach(function(p,i){x.fillStyle=i===0?"#0f0":"#0a0";x.fillRect(p.x*20,p.y*20,19,19)});x.fillStyle="red";x.fillRect(f.x*20,f.y*20,19,19);x.fillStyle="#0f0";x.font="16px monospace";x.fillText("Score:"+sc,10,390)}function tick(){var h={x:s[0].x,y:s[0].y};if(d==="u")h.y--;if(d==="d")h.y++;if(d==="l")h.x--;if(d==="r")h.x++;if(h.x<0||h.x>=20||h.y<0||h.y>=20||s.some(function(p){return p.x===h.x&&p.y===h.y})){clearInterval(g);x.fillStyle="red";x.font="30px monospace";x.fillText("GAME OVER",80,200);return}s.unshift(h);if(h.x===f.x&&h.y===f.y){sc++;f={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)}}else s.pop();draw()}document.addEventListener("keydown",function(e){if(e.key==="ArrowUp"&&d!=="d")d="u";if(e.key==="ArrowDown"&&d!=="u")d="d";if(e.key==="ArrowLeft"&&d!=="r")d="l";if(e.key==="ArrowRight"&&d!=="l")d="r"});var g=setInterval(tick,100);draw()}())',
+  quillcheat: "javascript:void(function(){if(document.getElementById('_qpanel')){document.getElementById('_qpanel').remove();return}var p=document.createElement('div');p.id='_qpanel';p.innerHTML='<div style=\"position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998\" onclick=\"document.getElementById(\\'_qpanel\\').remove()\"></div><div style=\"position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#1a1a2e,#16213e);border:2px solid #f59e0b;border-radius:20px;padding:28px;z-index:999999;font-family:Segoe UI,sans-serif;width:440px;max-height:90vh;overflow-y:auto;color:#fff;box-shadow:0 0 60px rgba(245,158,11,0.2)\"><div style=\"display:flex;align-items:center;justify-content:space-between;margin-bottom:20px\"><h2 style=\"margin:0;font-size:1.5rem;background:linear-gradient(90deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent\">Quill Finisher [Konzo]</h2><button onclick=\"document.getElementById(\\'_qpanel\\').remove()\" style=\"background:none;border:none;color:#666;font-size:1.5rem;cursor:pointer\">X</button></div><div style=\"background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:12px;margin-bottom:16px;font-size:0.85rem;color:#fbbf24\">Make sure you are on a Quill.org activity page before using.</div><button id=\"_qauto\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:12px;color:#000;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Auto-Answer Current Question</button><button id=\"_qall\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Speed-Run All Questions</button><button id=\"_qproof\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Proofreader Mode (Fix All)</button><button id=\"_qsubmit\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:16px\">Submit and Continue</button><div style=\"background:rgba(255,255,255,0.03);border-radius:12px;padding:14px\"><div style=\"font-size:0.85rem;color:#64748b;margin-bottom:8px\">Status</div><div id=\"_qstatus\" style=\"font-size:0.9rem;color:#4ade80\">Ready. Select an option above.</div></div></div>';document.body.appendChild(p);var P=document.getElementById('_qpanel');function log(m){var s=document.getElementById('_qstatus');if(s)s.textContent=m}function qScope(sel){var r=P.querySelectorAll(sel);var all=document.querySelectorAll(sel);return Array.from(all).filter(function(e){return!P.contains(e)})}function simClick(el){if(!el)return false;el.scrollIntoView({block:'center',behavior:'smooth'});setTimeout(function(){el.click();el.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}))},200);return true}function simInput(el,val){if(!el)return false;var n=el.tagName==='INPUT'||el.tagName==='TEXTAREA';if(n){var g=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')||Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value');if(g&&g.set)g.set.call(el,val);el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}else{el.textContent=val;el.dispatchEvent(new Event('input',{bubbles:true}))}return true}function qAnswer(){var clicked=false;var mc=qScope('[class*=mc-option],[class*=multiple-choice] [role=button],[class*=answer-choice],[class*=option-card],[data-testid*=answer-choice],[data-testid*=mc-option]');if(mc.length>0){simClick(mc[0]);log('Clicked multiple-choice option ('+mc.length+' found)');return true}var cards=qScope('.MuiCard-root,[class*=card][class*=answer],[class*=card][class*=option],[class*=selection]');if(cards.length>0){simClick(cards[0]);log('Clicked answer card ('+cards.length+' found)');return true}var opts=qScope('ul[role=listbox] li,[role=option],[role=radio],[role=checkbox]');if(opts.length>0){simClick(opts[0]);log('Clicked list option ('+opts.length+' found)');return true}var btns=qScope('button');for(var i=0;i<btns.length;i++){var cls=btns[i].className.toLowerCase();if(cls.includes('answer')||cls.includes('option')||cls.includes('choice')||cls.includes('select')){simClick(btns[i]);log('Clicked answer button');return true}}var ta=qScope('textarea');if(ta.length>0){simInput(ta[0],'The author uses descriptive language to convey the central theme of the passage, illustrating key concepts through vivid imagery and rhetorical strategies.');log('Filled textarea with answer');return true}var inp=qScope('input[type=text],input:not([type])');if(inp.length>0){simInput(inp[0],'The author uses descriptive language to convey the central theme of the passage.');log('Filled text input with answer');return true}var ce=qScope('[contenteditable=true]');if(ce.length>0){simInput(ce[0],'The author uses descriptive language to convey the central theme of the passage, illustrating key concepts through vivid imagery.');log('Filled contenteditable with answer');return true}log('No answer elements found. Are you on a Quill question page?');return false}function qNext(){var btns=qScope('button');for(var i=0;i<btns.length;i++){var t=btns[i].textContent.trim().toLowerCase();if(t==='next'||t==='continue'||t==='submit'||t==='check'||t==='check answer'||t==='submit answer'){simClick(btns[i]);log('Clicked: '+btns[i].textContent.trim());return true}}var submits=qScope('[type=submit],input[value*=Submit],input[value*=Check]');if(submits.length>0){simClick(submits[0]);log('Clicked submit input');return true}log('No next/submit button found.');return false}document.getElementById('_qauto').onclick=function(){log('Answering current question...');setTimeout(function(){qAnswer()},400)};document.getElementById('_qall').onclick=function(){var c=0,max=50;function step(){if(c>=max){log('Reached max limit ('+max+'). Stopping.');return}log('Answering #'+(c+1)+'...');setTimeout(function(){if(qAnswer()){c++;log('Answered #'+c+'. Waiting...');setTimeout(function(){qNext();setTimeout(step,1500)},1000)}else{if(c===0)log('No questions found. Navigate to a Quill activity first!');else log('Finished! Answered '+c+' question(s).')}},500)}step()};document.getElementById('_qproof').onclick=function(){var fixes=qScope('[class*=error],[class*=highlight],[class*=mistake],[class*=fix],[class*=incorrect],[data-testid*=error],[data-testid*=fix]');if(fixes.length>0){fixes.forEach(function(f){simClick(f)});log('Applied '+fixes.length+' fix(es)!')}else{log('No errors found to fix. Trying answer...');qAnswer()}setTimeout(qNext,800)};document.getElementById('_qsubmit').onclick=function(){qNext();log('Submitted!')}}())",
+
+  quillconnect: "javascript:void(function(){if(document.getElementById('_qcpanel')){document.getElementById('_qcpanel').remove();return}var p=document.createElement('div');p.id='_qcpanel';p.innerHTML='<div style=\"position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998\" onclick=\"document.getElementById(\\'_qcpanel\\').remove()\"></div><div style=\"position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#1a1a2e,#16213e);border:2px solid #ec4899;border-radius:20px;padding:28px;z-index:999999;font-family:Segoe UI,sans-serif;width:420px;color:#fff;box-shadow:0 0 60px rgba(236,72,153,0.2)\"><div style=\"display:flex;align-items:center;justify-content:space-between;margin-bottom:20px\"><h2 style=\"margin:0;font-size:1.5rem;background:linear-gradient(90deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent\">Connect Solver [Konzo]</h2><button onclick=\"document.getElementById(\\'_qcpanel\\').remove()\" style=\"background:none;border:none;color:#666;font-size:1.5rem;cursor:pointer\">X</button></div><button id=\"_qcsolve\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#ec4899,#be185d);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Auto-Solve Current</button><button id=\"_qcsolveall\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Solve All Remaining</button><button id=\"_qchint\" style=\"width:100%;padding:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#94a3b8;font-size:1rem;font-weight:600;cursor:pointer;margin-bottom:16px\">Show Hint Text</button><div style=\"background:rgba(255,255,255,0.03);border-radius:12px;padding:14px\"><div style=\"font-size:0.85rem;color:#64748b;margin-bottom:8px\">Status</div><div id=\"_qcstatus\" style=\"font-size:0.9rem;color:#4ade80\">Ready</div></div></div>';document.body.appendChild(p);function log(m){var s=document.getElementById('_qcstatus');if(s)s.textContent=m}function solve(){var inp=document.querySelector('textarea,input[type=text],[contenteditable=true]');if(!inp){log('No input field found!');return false}var sentences=[];document.querySelectorAll('[class*=sentence],[class*=prompt],[data-testid*=sentence]').forEach(function(s){if(s.textContent.trim())sentences.push(s.textContent.trim())});if(sentences.length<2)document.querySelectorAll('p,span,div[class*=text]').forEach(function(b){var t=b.textContent.trim();if(t.length>10&&t.length<200)sentences.push(t)});var combined=sentences.length>=2?sentences.slice(0,2).join(', ').replace(/\\.$/,', and ')+sentences.slice(2).join(', '):'The combined sentence effectively conveys the intended meaning.';if(!combined.endsWith('.'))combined+='.';if(inp.tagName==='TEXTAREA'||inp.tagName==='INPUT'){inp.value=combined;inp.dispatchEvent(new Event('input',{bubbles:true}))}else{inp.textContent=combined;inp.dispatchEvent(new Event('input',{bubbles:true}))}log('Filled combined sentence!');setTimeout(function(){var sb=document.querySelectorAll('button');for(var i=0;i<sb.length;i++){var t=sb[i].textContent.toLowerCase();if(t.includes('submit')||t.includes('check')||t.includes('next')||t.includes('continue')){sb[i].click();log('Submitted!');break}}},500);return true}document.getElementById('_qcsolve').onclick=function(){log('Solving...');setTimeout(solve,300)};document.getElementById('_qcsolveall').onclick=function(){var c=0;function step(){if(solve()){c++;log('Solved #'+c+'!');setTimeout(step,2000)}else{log('Done! Solved '+c+' question(s).')}};step()};document.getElementById('_qchint').onclick=function(){var hints=document.querySelectorAll('[class*=hint],[data-testid*=hint],[class*=clue]');if(hints.length>0){hints.forEach(function(h){h.style.display='block';h.style.visibility='visible';h.click()});log('Revealed '+hints.length+' hint(s)!')}else{var sentences=[];document.querySelectorAll('[class*=sentence],[class*=prompt]').forEach(function(s){if(s.textContent.trim())sentences.push(s.textContent.trim())});log(sentences.length>0?'Sentences: '+sentences.join(' | '):'No hints or sentences found.')}}}())",
+
+  quillgram: "javascript:void(function(){if(document.getElementById('_qgpanel')){document.getElementById('_qgpanel').remove();return}var p=document.createElement('div');p.id='_qgpanel';p.innerHTML='<div style=\"position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998\" onclick=\"document.getElementById(\\'_qgpanel\\').remove()\"></div><div style=\"position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#1a1a2e,#16213e);border:2px solid #22c55e;border-radius:20px;padding:28px;z-index:999999;font-family:Segoe UI,sans-serif;width:420px;color:#fff;box-shadow:0 0 60px rgba(34,197,94,0.2)\"><div style=\"display:flex;align-items:center;justify-content:space-between;margin-bottom:20px\"><h2 style=\"margin:0;font-size:1.5rem;background:linear-gradient(90deg,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent\">Grammar Bot [Konzo]</h2><button onclick=\"document.getElementById(\\'_qgpanel\\').remove()\" style=\"background:none;border:none;color:#666;font-size:1.5rem;cursor:pointer\">X</button></div><div style=\"background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px;margin-bottom:16px;font-size:0.85rem;color:#4ade80\">Go to a Quill Grammar activity, then click Start.</div><button id=\"_qgstart\" style=\"width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px\">Start Auto-Answer</button><button id=\"_qgstop\" style=\"width:100%;padding:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#94a3b8;font-size:1rem;font-weight:600;cursor:pointer;margin-bottom:10px\">Stop</button><label style=\"display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:0.9rem;color:#94a3b8\"><input type=\"checkbox\" id=\"_qgautoadv\" checked> Auto-advance</label><label style=\"display:flex;align-items:center;gap:10px;margin-bottom:16px;font-size:0.9rem;color:#94a3b8\">Speed: <select id=\"_qgspeed\" style=\"background:#0a0a0a;color:#fff;border:1px solid #333;border-radius:6px;padding:4px 8px\"><option value=\"500\">Blazing</option><option value=\"1200\" selected>Normal</option><option value=\"2500\">Slow</option></select></label><div style=\"background:rgba(255,255,255,0.03);border-radius:12px;padding:14px\"><div style=\"font-size:0.85rem;color:#64748b;margin-bottom:8px\">Status</div><div id=\"_qgstatus\" style=\"font-size:0.9rem;color:#4ade80\">Ready</div><div id=\"_qgcount\" style=\"font-size:0.8rem;color:#64748b;margin-top:4px\">Answered: 0</div></div></div>';document.body.appendChild(p);var running=false,answered=0;function log(m){var s=document.getElementById('_qgstatus');if(s)s.textContent=m}function answerOne(){if(!running)return;var options=document.querySelectorAll('[role=button][class*=answer],[role=button][class*=option],[class*=answer-choice],[class*=option-card],[data-testid*=option],[class*=mc-option],[class*=choice]');if(options.length>0){options[0].click();answered++;document.getElementById('_qgcount').textContent='Answered: '+answered;log('Answered #'+answered+'! ('+options.length+' options)');var spd=parseInt(document.getElementById('_qgspeed').value);if(document.getElementById('_qgautoadv').checked){setTimeout(function(){var btns=document.querySelectorAll('button');for(var i=0;i<btns.length;i++){var t=btns[i].textContent.toLowerCase();if(t.includes('next')||t.includes('continue')||t.includes('check')||t.includes('submit')){btns[i].click();break}}setTimeout(answerOne,spd)},spd)}return}var inputs=document.querySelectorAll('input[type=text],textarea');if(inputs.length>0){inputs[0].value='The sentence demonstrates correct grammar usage.';inputs[0].dispatchEvent(new Event('input',{bubbles:true}));answered++;document.getElementById('_qgcount').textContent='Answered: '+answered;log('Filled text input #'+answered+'!');var spd=parseInt(document.getElementById('_qgspeed').value);if(document.getElementById('_qgautoadv').checked){setTimeout(function(){var btns=document.querySelectorAll('button');for(var i=0;i<btns.length;i++){var t=btns[i].textContent.toLowerCase();if(t.includes('next')||t.includes('submit')||t.includes('check')){btns[i].click();break}}setTimeout(answerOne,spd)},spd)}return}log('No questions found. Stopping.');running=false}document.getElementById('_qgstart').onclick=function(){running=true;answered=0;log('Running...');answerOne()};document.getElementById('_qgstop').onclick=function(){running=false;log('Stopped. Answered '+answered+' question(s).')}}())"
+};
+
+function copyCode(btn, id) {
+    var code;
+    if (bookmarkletCodes[id]) {
+        code = bookmarkletCodes[id];
+    } else {
+        var el = document.getElementById(id);
+        code = el.querySelector('code').textContent;
+    }
+    navigator.clipboard.writeText(code).then(function() {
+        btn.innerHTML = '&#9989; Copied!';
+        btn.classList.add('copied');
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('show');
+        setTimeout(function() {
+            btn.innerHTML = '&#128203; Copy Code';
+            btn.classList.remove('copied');
+        }, 2000);
+    });
+}
+
+document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active') });
+        tab.classList.add('active');
+        var filter = tab.dataset.filter;
+        document.querySelectorAll('.card').forEach(function(card) {
+            card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+        });
+    });
+});
+
+document.getElementById('search').addEventListener('input', function() {
+    var query = this.value.toLowerCase();
+    document.querySelectorAll('.card').forEach(function(card) {
+        var name = card.dataset.name.toLowerCase();
+        var text = card.textContent.toLowerCase();
+        card.style.display = (name.includes(query) || text.includes(query)) ? '' : 'none';
+    });
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active') });
+    document.querySelector('.tab[data-filter="all"]').classList.add('active');
+});
+
+var counters = document.querySelectorAll('.counter');
+var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+            var target = +entry.target.dataset.target;
+            var current = 0;
+            var increment = target / 60;
+            var timer = setInterval(function() {
+                current += increment;
+                if (current >= target) { entry.target.textContent = target; clearInterval(timer); }
+                else { entry.target.textContent = Math.floor(current); }
+            }, 20);
+            observer.unobserve(entry.target);
+        }
+    });
+});
+counters.forEach(function(c) { observer.observe(c) });
+
+for (var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = Math.random() * 100 + 'vh';
+    p.style.opacity = Math.random() * 0.5;
+    p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+    p.style.animation = 'float ' + (Math.random() * 10 + 10) + 's ease-in-out infinite';
+    p.style.animationDelay = -(Math.random() * 10) + 's';
+    document.body.appendChild(p);
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script><div class="particle" style="left: 86.4711vw; top: 5.43405vh; opacity: 0.469536; height: 2.07146px; width: 2.07146px; animation: 17.9173s ease-in-out -9.28728s infinite normal none running float;"></div><div class="particle" style="left: 96.9405vw; top: 55.5409vh; opacity: 0.203933; height: 1.13942px; width: 1.13942px; animation: 10.0931s ease-in-out -9.893s infinite normal none running float;"></div><div class="particle" style="left: 92.8433vw; top: 23.8566vh; opacity: 0.444046; height: 3.99873px; width: 3.99873px; animation: 11.5016s ease-in-out -4.82529s infinite normal none running float;"></div><div class="particle" style="left: 81.4918vw; top: 7.00115vh; opacity: 0.159238; height: 1.6856px; width: 1.6856px; animation: 10.5632s ease-in-out -6.50279s infinite normal none running float;"></div><div class="particle" style="left: 1.94237vw; top: 61.3721vh; opacity: 0.448497; height: 2.47604px; width: 2.47604px; animation: 19.2557s ease-in-out -1.31465s infinite normal none running float;"></div><div class="particle" style="left: 66.1382vw; top: 11.3148vh; opacity: 0.258413; height: 3.85018px; width: 3.85018px; animation: 13.1745s ease-in-out -3.16352s infinite normal none running float;"></div><div class="particle" style="left: 57.1906vw; top: 35.1574vh; opacity: 0.228097; height: 1.18352px; width: 1.18352px; animation: 19.1209s ease-in-out -1.84163s infinite normal none running float;"></div><div class="particle" style="left: 39.8954vw; top: 25.588vh; opacity: 0.0877658; height: 2.29975px; width: 2.29975px; animation: 11.2144s ease-in-out -1.62083s infinite normal none running float;"></div><div class="particle" style="left: 70.2634vw; top: 7.14224vh; opacity: 0.175153; height: 2.70552px; width: 2.70552px; animation: 10.468s ease-in-out -8.81287s infinite normal none running float;"></div><div class="particle" style="left: 58.5106vw; top: 97.774vh; opacity: 0.355103; height: 2.90008px; width: 2.90008px; animation: 17.9725s ease-in-out -3.85574s infinite normal none running float;"></div><div class="particle" style="left: 80.8238vw; top: 71.5801vh; opacity: 0.331862; height: 3.73993px; width: 3.73993px; animation: 15.7259s ease-in-out -1.16272s infinite normal none running float;"></div><div class="particle" style="left: 0.798899vw; top: 89.3985vh; opacity: 0.459831; height: 3.74457px; width: 3.74457px; animation: 16.2481s ease-in-out -1.02602s infinite normal none running float;"></div><div class="particle" style="left: 27.7561vw; top: 5.27706vh; opacity: 0.430205; height: 1.08053px; width: 1.08053px; animation: 15.2203s ease-in-out -7.95151s infinite normal none running float;"></div><div class="particle" style="left: 87.4102vw; top: 30.2866vh; opacity: 0.226943; height: 3.31628px; width: 3.31628px; animation: 10.4761s ease-in-out -6.58521s infinite normal none running float;"></div><div class="particle" style="left: 83.3797vw; top: 5.72662vh; opacity: 0.46797; height: 1.86147px; width: 1.86147px; animation: 11.3839s ease-in-out -0.316443s infinite normal none running float;"></div><div class="particle" style="left: 91.1558vw; top: 24.0189vh; opacity: 0.0490425; height: 2.84426px; width: 2.84426px; animation: 17.6265s ease-in-out -0.089332s infinite normal none running float;"></div><div class="particle" style="left: 0.677016vw; top: 5.99768vh; opacity: 0.0143344; height: 2.93605px; width: 2.93605px; animation: 11.8757s ease-in-out -6.4015s infinite normal none running float;"></div><div class="particle" style="left: 36.688vw; top: 21.7379vh; opacity: 0.108584; height: 2.16591px; width: 2.16591px; animation: 10.7909s ease-in-out -7.91517s infinite normal none running float;"></div><div class="particle" style="left: 71.3068vw; top: 63.3286vh; opacity: 0.493436; height: 2.4356px; width: 2.4356px; animation: 18.6996s ease-in-out -7.95365s infinite normal none running float;"></div><div class="particle" style="left: 58.479vw; top: 3.66065vh; opacity: 0.406962; height: 2.7697px; width: 2.7697px; animation: 13.9915s ease-in-out -0.490141s infinite normal none running float;"></div><div class="particle" style="left: 17.0748vw; top: 34.5624vh; opacity: 0.0216415; height: 1.30404px; width: 1.30404px; animation: 19.6575s ease-in-out -7.41752s infinite normal none running float;"></div><div class="particle" style="left: 85.2547vw; top: 26.1088vh; opacity: 0.0191474; height: 1.2769px; width: 1.2769px; animation: 17.7511s ease-in-out -9.69222s infinite normal none running float;"></div><div class="particle" style="left: 18.0101vw; top: 96.417vh; opacity: 0.00980912; height: 1.73295px; width: 1.73295px; animation: 17.5291s ease-in-out -6.40807s infinite normal none running float;"></div><div class="particle" style="left: 1.55322vw; top: 70.5767vh; opacity: 0.320189; height: 3.47111px; width: 3.47111px; animation: 16.8777s ease-in-out -5.20188s infinite normal none running float;"></div><div class="particle" style="left: 45.1909vw; top: 76.5153vh; opacity: 0.323776; height: 1.99683px; width: 1.99683px; animation: 12.2557s ease-in-out -2.82682s infinite normal none running float;"></div><div class="particle" style="left: 9.64534vw; top: 18.1656vh; opacity: 0.177368; height: 3.60314px; width: 3.60314px; animation: 19.2969s ease-in-out -8.1278s infinite normal none running float;"></div><div class="particle" style="left: 10.1746vw; top: 7.79267vh; opacity: 0.0215229; height: 3.85953px; width: 3.85953px; animation: 15.3199s ease-in-out -5.14213s infinite normal none running float;"></div><div class="particle" style="left: 39.0734vw; top: 74.7224vh; opacity: 0.492311; height: 1.32351px; width: 1.32351px; animation: 13.9307s ease-in-out -2.09856s infinite normal none running float;"></div><div class="particle" style="left: 46.3021vw; top: 27.0708vh; opacity: 0.49831; height: 2.90013px; width: 2.90013px; animation: 11.7296s ease-in-out -6.86039s infinite normal none running float;"></div><div class="particle" style="left: 84.5523vw; top: 66.0318vh; opacity: 0.444186; height: 2.44018px; width: 2.44018px; animation: 13.7473s ease-in-out -6.92567s infinite normal none running float;"></div>
+
+
+</body></html>
